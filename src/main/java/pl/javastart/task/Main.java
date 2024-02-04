@@ -5,32 +5,42 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        int booksCounter = 0;
+        Scanner scanner = new Scanner(System.in);
         Book[] books = new Book[3];
         System.out.println("Podaj informacje o trzech unikalnych ksiazkach");
-        int counter = 0;
-        int counter2 = 0;
-        while (counter < books.length) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Podaj tytul");
-            String title = scanner.nextLine();
-            System.out.println("Podaj ilosc stron");
-            int pages = scanner.nextInt();
-            Book book = new Book(title, pages);
-            books[counter] = book;
-            for (int i = 0; i <= counter; i++) {
-                if (title.equals(books[i].getTitle())) {
-                    counter2++;
-                }
+        while (booksCounter < books.length) {
+            Book book = createBook(scanner);
+            if (isUnique(book, books, booksCounter) != 0) {
+                books[booksCounter] = book;
+                booksCounter++;
             }
-            if (counter2 >= 3) {
+        }
+        for (Book book : books) {
+            System.out.println("Ksiazka: " + book.getTitle() + ", liczba stron: " + book.getPages());
+        }
+    }
+
+    private static Book createBook(Scanner scanner) {
+        System.out.println("Podaj tytul");
+        String title = scanner.nextLine();
+        System.out.println("Podaj ilosc stron");
+        int pages = scanner.nextInt();
+        Book book = new Book(title, pages);
+        return book;
+    }
+
+    private static int isUnique(Book book, Book[] books, int booksCounter) {
+        int innerMethodCounter = 0;
+        for (int i = 0; i <= booksCounter; i++) {
+            if (book.getTitle().equals(books[i].getTitle())) {
+                innerMethodCounter++;
+            }
+            if (innerMethodCounter >= 2) {
                 System.out.println("Duplikat");
-                counter2 = 0;
-                continue;
+                return 0;
             }
-            counter++;
         }
-        for (int i = 0; i < books.length; i++) {
-            System.out.println("Ksiazka: " + books[i].getTitle() + ", liczba stron: " + books[i].getPages());
-        }
+        return 1;
     }
 }
