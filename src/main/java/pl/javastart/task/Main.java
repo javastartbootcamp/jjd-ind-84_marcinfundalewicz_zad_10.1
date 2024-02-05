@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Podaj informacje o trzech unikalnych ksiazkach");
         while (booksCounter < books.length) {
             Book book = createBook(scanner);
-            if (isUnique(book, books, booksCounter) != 0) {
+            if (isUnique(book, books, booksCounter)) {
                 books[booksCounter] = book;
                 booksCounter++;
             }
@@ -26,21 +26,22 @@ public class Main {
         String title = scanner.nextLine();
         System.out.println("Podaj ilosc stron");
         int pages = scanner.nextInt();
+        scanner.nextLine();
         Book book = new Book(title, pages);
         return book;
     }
 
-    private static int isUnique(Book book, Book[] books, int booksCounter) {
+    private static boolean isUnique(Book book, Book[] books, int booksCounter) {
         int innerMethodCounter = 0;
-        for (int i = 0; i <= booksCounter; i++) {
-            if (book.getTitle().equals(books[i].getTitle())) {
+        for (int i = 0; i < booksCounter; i++) {
+            if (book.equals(books[i])) {
                 innerMethodCounter++;
             }
-            if (innerMethodCounter >= 2) {
-                System.out.println("Duplikat");
-                return 0;
-            }
         }
-        return 1;
+        if (innerMethodCounter >= 1) {
+            System.out.println("Duplikat");
+            return false;
+        }
+        return true;
     }
 }
